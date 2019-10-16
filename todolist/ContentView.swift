@@ -17,10 +17,8 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView{
-//            Text("Hello world")
             List{
-                Section(header: Text("What's next?")){
-
+                Section(header: Text("Please add to your list?")){
                     HStack{
                         TextField("New Item", text: self.$newTodoitem)
                         Button(action: {
@@ -43,9 +41,18 @@ struct ContentView: View {
                         }
                     }
                 }.font(.headline)
-                Section(header: Text("To DO's")){
-                    ForEach(self.toDoitems) {toDoitem in
-                        ToDoitemView(title: toDoitem.title!, createdAt: "\(toDoitem.createdAt!)")
+                Section(header: Text("Things to do")){
+                    ForEach(self.toDoitems) {todoitem in
+                        ToDoitemView(title: todoitem.title!, createdAt: "\(todoitem.createdAt!)")
+                    }.onDelete {indexSet in
+                        let deleteItem = self.toDoitems[indexSet.first!]
+                        self.managedObjectContext.delete(deleteItem)
+                        
+                        do {
+                            try self.managedObjectContext.save()
+                        }catch{
+                            print(error)
+                    }
                 }
             }
             .navigationBarTitle(Text("Daily To-do-list"))
