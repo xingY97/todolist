@@ -52,6 +52,7 @@ struct ContentView: View {
                             try self.managedObjectContext.save()
                         }catch{
                             print(error)
+                        }
                     }
                 }
             }
@@ -67,4 +68,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
   }
-}
+
